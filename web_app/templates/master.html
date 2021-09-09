@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Web app for dog breed identification</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://kit.fontawesome.com/cdd53b0578.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-inverse fixed-top navbar-expand-md bg-light">
+      <div class="container">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+          aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> ☰
+        </button>
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav ml-auto">
+            <a class="nav-link" target="_blank" href="https://chrishoffmann.ai"><i class="fas fa-user"></i>&nbsp; About
+              me</a>
+            <li>
+              <a class="nav-link" target="_blank" href="https://github.com/chris-hoffmann/dog-breed-web-app"><i
+                  class="fab fa-lg fa-github"></i>&nbsp; GitHub</a>
+            </li>
+          </ul>
+          <button type="button" class="btn btn-primary mb-3 mb-md-0 ml-md-3" data-toggle="modal"
+            data-target="#exampleModal">
+            Learn more
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="jumbotron p-3 p-md-5 mt-4">
+    <div class="container">
+      <div class="col-md-6 px-0"></div>
+      <h1 class="display-4">What kind of dog is it?</h1>
+      <p class="lead">This deep learning-based app provides an answer. <br> Just upload an image of a dog and make
+        a prediction.</p>
+      <hr />
+
+      <div class="row">
+        <div class="col-lg-12 form-group-lg">
+          <form action="{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>
+            <p1 class="lead mb-3 font-weight-normal">Select an image</h1>
+              <p><input type=file name=file>
+                <input type=submit value=Predict>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card-deck mb-4">
+      {% block message %}{% endblock %}
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Model details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>This app uses a neural network model that was trained to predict dog breeds from input images.</p>
+          <h5 class="display-5">Data</h5>
+          <p>
+            Our dataset for model training and evaluation entails 8351 single-label images grouped into
+            133 breed classes ranging from A as in <i>Affenpinscher</i> to Y as in <i>Yorkshire terrier</i>.
+            Note that these classes are also present in the ImageNet dataset.
+          </p>
+          <p>
+            The dataset was made available by Udacity and can be downloaded from
+            <a href="https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip">here</a>.
+            The training set has 80% of the data. Each class contains between 26 and 77 images for training.
+            The validation and test set account for 10% of the data, respectively, with class distributions
+            that match the training set.
+          </p>
+          <h5 class="display-5">Modeling</h5>
+          <p>
+            We employ a transfer learning strategy for implementing a dog breed classifier.
+            A <a href="https://arxiv.org/abs/1801.04381">MobileNetV2</a> backbone pre-trained on ImageNet
+            is used for feature extraction.
+            We train a classification head on (average) pooled features for 20 epochs yielding
+            a model that reaches 86% accuracy on the validation and test set, respectively.
+          </p>
+          <h5 class="display-5">Source code</h5>
+          <p>
+            The source code for the web app is available from
+            <a href="https://github.com/chris-hoffmann/dog-breed-web-app">GitHub</a>.
+            The backend of the app relies on the Flask library, the frontend on the Bootstrap framework.
+            The TensorFlow library was used for modeling.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

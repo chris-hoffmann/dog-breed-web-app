@@ -1,0 +1,30 @@
+{% extends "master.html" %}
+
+{% block message %}
+<div class="card">
+    <div class="card-header">
+        Uploaded image
+    </div>
+    <img src="{{ url_for('send_file', filename=filename) }}" width="300" height="300"></p>
+    <div class="card-body">
+        {% if species %}
+        <p class="lead">A <i>{{species}}</i> was detected in the uploaded image.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Predicted breed
+    </div>
+    <img src="{{ url_for('send_breed_photo', id=breed_img) }}" width="300" height="300">
+    <div class="card-body">
+        <br>
+        {% if breed %}
+        <p class="lead"><b>{{breed}}</b></p>
+        {% else %}
+        <p class="lead">No <i>dog</i> was detected in the uploaded image.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
